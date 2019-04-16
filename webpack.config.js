@@ -32,9 +32,38 @@ module.exports={
                 ]
             },
             {
-                test:/\.(png|svg|jpg|gif)$/,
+                test: /\.(gif|png|jpe?g|svg)$/i,
                 use:[
-                    "file-loader"
+                    "file-loader",//讀圖片喔
+                    {
+                        loader: 'image-webpack-loader', //這個loader會壓縮圖片
+                        options: {
+                            //bypassOnDebug:true, // webpack@1.x //啟用時表示圖片都不做處理(略過)，以利開發人員加快編譯速度。上線時要關掉
+                            //disable: true, // webpack@2.x and newer //同bypassOnDebug，但是給 webpack@2.x 以上的新版本使用
+                            mozjpeg: {
+                                progressive: true,
+                                quality: 65
+                            },
+                            // optipng.enabled: false will disable optipng
+                            optipng: {
+                                enabled: false,
+                            },
+                            pngquant: {
+                                quality: '65-90',
+                                speed: 4
+                            },
+                            gifsicle: {
+                                interlaced: false,
+                            },
+                            // the webp option will enable WEBP
+                            //優點: 真的可以壓成很小
+                            //缺點: firefox打不開 webp格式
+                            //所以先不用這個
+                            // webp: {
+                            //     quality: 75
+                            // }
+                        },
+                    },
                 ]
             }
         ]
