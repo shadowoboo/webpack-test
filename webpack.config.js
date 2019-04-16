@@ -8,6 +8,7 @@ module.exports={
         path:path.resolve(__dirname, "dist")
     },
     // module是需要安裝的，安裝在 node_module 才能讓自動化工具抓到來源成功引用
+    // ex.各種 loader 就要安裝，才能針對檔案解析
     module:{
         rules:[
             //css解析並放進 index.html裡面
@@ -20,6 +21,14 @@ module.exports={
                 use:[
                     "style-loader",
                     "css-loader",
+                ]
+            },
+            {
+                test: /\.scss$/,
+                use:[
+                    "style-loader",
+                    "css-loader",
+                    "sass-loader"
                 ]
             }
         ]
