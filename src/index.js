@@ -3,6 +3,7 @@ import "./style.css"; //引入css檔(需要設定css的相關loader後，才能i
 import "./aa.scss";
 import Icon from "./giphy.gif";
 import Png from "./cookie.png";
+import Data from "./data.xml";
 
 function component(){
     let el=document.createElement("div");
@@ -22,6 +23,9 @@ function component(){
     myPng.classList.add("myPng");
     el.appendChild(myPng);
 
+    //xml test
+    console.log(Data);
+    
     return el;
 }
 
