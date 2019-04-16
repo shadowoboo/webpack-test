@@ -76,7 +76,20 @@ module.exports={
                         },
                     },
                 ]
-            }
+            },
+            {
+                test:/\.(woff|woff2|eot|ttf|otf)$/,
+                use:[
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 8192, //數字格式。檔案小於 此Byte則會轉換為 base64字串，其他則會call "file-loader"繼續執行
+                            // limit: 1, //數字格式。檔案小於 此Byte則會轉換為 base64字串，其他則會call "file-loader"繼續執行
+                            name: 'font/[name]-[hash:8].[ext]', //目的地資料夾。[name]-[hash:8]: 名字-hash前8碼，避免同名圖片打包時被覆蓋。不做此設定則不建立路徑
+                        }
+                    },
+                ]
+            },
         ]
     }
 }
