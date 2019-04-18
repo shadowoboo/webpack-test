@@ -1,5 +1,0 @@
-.hello{
-    color: red;
-    /*雖然圖片路徑是指向 ./giphy.gif ，但是經過轉譯後，html裡的圖片路徑會重新指向*/
-    background: url("./giphy.gif") no-repeat;
-}

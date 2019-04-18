@@ -4,12 +4,19 @@ import _ from "lodash"; //載入 lodash ，用來簡化陣列之類的東西，�
 // import Icon from "./giphy.gif";
 // import Png from "./cookie.png";
 // import Data from "./data.xml";
+import printMe from "./print";
 
 function component(){
     let el=document.createElement("div");
+    var btn=document.createElement("button");
     // el.innerText="Hello webpack";
     el.innerText =_.join(['Hello', 'webpack'], ' ');
     // el.classList.add("hello");
+
+    btn.innerHTML="Click then check console";
+    btn.onclick=printMe;
+    el.appendChild(btn);
+
 
     // //add img
     // var myIcon=new Image();
@@ -25,6 +32,8 @@ function component(){
 
     // //xml test
     // console.log(Data);
+
+
     
     return el;
 }

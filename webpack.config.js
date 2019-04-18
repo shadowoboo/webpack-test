@@ -1,10 +1,16 @@
 const path=require("path");
 
 module.exports={
-    entry:"./src/index.js", //進入點
+    // entry:"./src/index.js", //進入點
+    entry:{
+        //多個進入點，用物件包裝
+        app:"./src/index.js",
+        print:"./src/print.js"
+    },
     output:{
         // filename:"main.js",
-        filename:"bundle.js",
+        // filename:"bundle.js",
+        filename:"[name].bundle.js", //輸出的名字會自行更動
         path:path.resolve(__dirname, "dist")
     },
     // module是需要安裝的，安裝在 node_module 才能讓自動化工具抓到來源成功引用
