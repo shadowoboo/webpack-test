@@ -36,7 +36,7 @@ module.exports={
             title:"HMR test" //自動更新 html 內的 title名稱
         }),
         new webpack.HotModuleReplacementPlugin(), // HMR 外掛
-        new UglifyJSPlugin(),
+        new UglifyJSPlugin(),//此外掛只支援到 ES5，所以 ES6 以上使用 babel 轉換成 ES5，此外掛才會正常執行。
     ],
     // optimization: {
     //     minimizer: [new UglifyJsPlugin({
@@ -47,6 +47,17 @@ module.exports={
     // ex.各種 loader 就要安裝，才能針對檔案解析
     module:{
         rules:[
+            {
+                //把 ES6 轉譯成舊版
+                test: /\.(js)$/,
+                exclude: /(node_modules)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
+            },
             {
                 //css解析並放進 index.html裡面
                 //找到 .css檔
