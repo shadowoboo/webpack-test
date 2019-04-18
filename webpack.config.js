@@ -3,12 +3,15 @@ const HtmlWebpackPlugin=require("html-webpack-plugin"); // HTML打包時更新
 const CleanWebpackPlugin=require("clean-webpack-plugin");// 清除目的地資料夾多餘檔案
 
 module.exports={
+    mode:"development",//設定為開發模式
     // entry:"./src/index.js", //進入點
     entry:{
         //多個進入點，用物件包裝
         app:"./src/index.js",
         print:"./src/print.js"
     },
+    //在開發模式下，使用開發工具
+    devtool:"inline-source-map",//追蹤原檔案來源
     output:{
         // filename:"main.js",
         // filename:"bundle.js",
