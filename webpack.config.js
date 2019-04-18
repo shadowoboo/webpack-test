@@ -1,4 +1,6 @@
 const path=require("path");
+const HtmlWebpackPlugin=require("html-webpack-plugin"); // HTML打包時更新
+const CleanWebpackPlugin=require("clean-webpack-plugin");// 清除目的地資料夾多餘檔案
 
 module.exports={
     // entry:"./src/index.js", //進入點
@@ -10,9 +12,19 @@ module.exports={
     output:{
         // filename:"main.js",
         // filename:"bundle.js",
-        filename:"[name].bundle.js", //輸出的名字會自行更動
+        filename:"[name].bundle.js", //[name]表示輸出的名字會自行更動，依照自各的進入點輸出各自的檔案
+        //Q: 若.js檔名更動，則 webpack 打包時輸出新的檔名。但 index.html 內不會自己更新檔名。如何自動化?
+        //A: 使用 pligin 協助更新 html
         path:path.resolve(__dirname, "dist")
     },
+    //為了讓HTML也會在 webpack 打包時一起更新
+    plugins:[
+        new CleanWebpackPlugin(), //rebuild 時，清除目的地資料夾的未使用檔案
+        new HtmlWebpackPlugin({
+            title:"987987" //自動更新 html 內的 title名稱
+        }),
+    ],
+    
     // module是需要安裝的，安裝在 node_module 才能讓自動化工具抓到來源成功引用
     // ex.各種 loader 就要安裝，才能針對檔案解析
     // module:{
