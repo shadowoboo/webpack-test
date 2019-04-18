@@ -12,6 +12,8 @@
     "start": "webpack-dev-server --open",
     "//_server":"webpack-dev-middleware 和 express 配合使用",
     "server":"node server.js",
+    "//_dev-server":"額外設定 dev-server.js 來控制 dev-server 選項。目前設定執行為 npm dev-server",
+    "dev-server":"node dev-server.js",
     "build": "webpack"
   },
   "keywords": [],

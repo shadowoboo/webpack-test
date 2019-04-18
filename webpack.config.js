@@ -1,6 +1,7 @@
 const path=require("path");
 const HtmlWebpackPlugin=require("html-webpack-plugin"); // HTML打包時更新
 const CleanWebpackPlugin=require("clean-webpack-plugin");// 清除目的地資料夾多餘檔案
+const webpack = require("webpack"); //準備開啟Hot Module Replacement。
 
 module.exports={
     mode:"development",//設定為開發模式
@@ -8,13 +9,14 @@ module.exports={
     entry:{
         //多個進入點，用物件包裝
         app:"./src/index.js",
-        print:"./src/print.js"
+        // print:"./src/print.js" //使用 HMR 練習，先移除此進入點，歸回 index.js 當唯一進入點
     },
     //在開發模式下，使用開發工具
     devtool:"inline-source-map",//追蹤原檔案來源
     //開發模式下的小伺服器(兼具自動rebuild + 自動刷新瀏覽器功能)
     devServer:{
-        contentBase:"./dist"
+        contentBase:"./dist",
+        hot: true, //開啟 HMR 
     },
     output:{
         // filename:"main.js",
@@ -29,8 +31,9 @@ module.exports={
     plugins:[
         new CleanWebpackPlugin(), //rebuild 時，清除目的地資料夾的未使用檔案
         new HtmlWebpackPlugin({
-            title:"987987" //自動更新 html 內的 title名稱
+            title:"HMR test" //自動更新 html 內的 title名稱
         }),
+        new webpack.HotModuleReplacementPlugin(), // HMR 外掛
     ],
     
     // module是需要安裝的，安裝在 node_module 才能讓自動化工具抓到來源成功引用
