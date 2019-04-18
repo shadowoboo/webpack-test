@@ -12,13 +12,18 @@ module.exports={
     },
     //在開發模式下，使用開發工具
     devtool:"inline-source-map",//追蹤原檔案來源
+    //開發模式下的小伺服器(兼具自動rebuild + 自動刷新瀏覽器功能)
+    devServer:{
+        contentBase:"./dist"
+    },
     output:{
         // filename:"main.js",
         // filename:"bundle.js",
         filename:"[name].bundle.js", //[name]表示輸出的名字會自行更動，依照自各的進入點輸出各自的檔案
         //Q: 若.js檔名更動，則 webpack 打包時輸出新的檔名。但 index.html 內不會自己更新檔名。如何自動化?
         //A: 使用 pligin 協助更新 html
-        path:path.resolve(__dirname, "dist")
+        path:path.resolve(__dirname, "dist"),
+        publicPath: "/", //給express + webpack-dev-middleware使用。會自動 rebuild，但沒有特別設定則瀏覽器不會自動刷新。
     },
     //為了讓HTML也會在 webpack 打包時一起更新
     plugins:[
