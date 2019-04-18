@@ -1,17 +1,18 @@
 import _ from "lodash"; //載入 lodash ，用來簡化陣列之類的東西，讓js好用(?)
-// import "./style.css"; //引入css檔(需要設定css的相關loader後，才能import .css進來)
+import "./style.scss"; //引入css檔(需要設定css的相關loader後，才能import .css進來)
 // import "./aa.scss";
 // import Icon from "./giphy.gif";
-// import Png from "./cookie.png";
+import Png from "./IP-6.png";
 // import Data from "./data.xml";
 import printMe from "./print";
+import showBlock from "./block";
 
 function component(){
     let el=document.createElement("div");
     var btn=document.createElement("button");
     // el.innerText="Hello webpack";
     el.innerText =_.join(['Hello', 'webpack'], ' ');
-    // el.classList.add("hello");
+    el.classList.add("hello");
 
     btn.innerHTML="Click then check console";
     btn.onclick=printMe;
@@ -24,17 +25,26 @@ function component(){
     // myIcon.classList.add("myIcon");
     // el.appendChild(myIcon);
 
-    // //add png
-    // var myPng = new Image();
-    // myPng.src = Png;
-    // myPng.classList.add("myPng");
-    // el.appendChild(myPng);
+    //add png
+    var myPng = new Image();
+    myPng.src = Png;
+    myPng.classList.add("myPng");
+    el.appendChild(myPng);
 
     // //xml test
     // console.log(Data);
 
-
+    //測試新的js匯入
+    // let theBlock=showBlock();
+    // el.appendChild(theBlock);
+    // console.log(`theBlock:  `,theBlock);
+    var btn2 = document.createElement("button");
+    btn2.innerHTML = "showBlock";
+    btn2.onclick = showBlock;;
+    el.appendChild(btn2);
+    console.log(`showBlock: `, showBlock);
     
+
     return el;
 }
 
@@ -52,6 +62,14 @@ if(module.hot){
         // printMe();
         document.body.removeChild(elem); //先移除該元件
         elem=component();//重新渲染，把 component() 再次令給 elem
+        document.body.appendChild(elem); //塞回去        
+    })
+
+    module.hot.accept("./block.js", function () {
+        console.log(`Accepting the updated showBlock module!!!`);
+        // printMe();
+        document.body.removeChild(elem); //先移除該元件
+        elem = component();//重新渲染，把 component() 再次令給 elem
         document.body.appendChild(elem); //塞回去        
     })
 }
