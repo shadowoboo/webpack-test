@@ -2,7 +2,6 @@ const path = require("path");//nodejs本身的core function讓我們專案的路
 const HtmlWebpackPlugin=require("html-webpack-plugin"); // HTML打包時更新
 const CleanWebpackPlugin=require("clean-webpack-plugin");// 清除目的地資料夾多餘檔案
 const webpack = require("webpack"); //準備開啟Hot Module Replacement。
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports={
@@ -11,6 +10,7 @@ module.exports={
     entry:{
         //多個進入點，用物件包裝
         app:"./src/index.js",
+        // another:"./src/js/another.js",//第二隻 .html 的進入點
         // print:"./src/print.js" //使用 HMR 練習，先移除此進入點，歸回 index.js 當唯一進入點
     },
     //在開發模式下，使用開發工具
@@ -24,16 +24,21 @@ module.exports={
         // filename:"main.js",
         // filename:"bundle.js",
         filename:"[name].bundle.js", //[name]表示輸出的名字會自行更動，依照自各的進入點輸出各自的檔案
+        // filename:"[name].bundle.html",
         //Q: 若.js檔名更動，則 webpack 打包時輸出新的檔名。但 index.html 內不會自己更新檔名。如何自動化?
         //A: 使用 pligin 協助更新 html
         path:path.resolve(__dirname, "dist"),
-        // publicPath: "/", //給express + webpack-dev-middleware使用。會自動 rebuild，但沒有特別設定則瀏覽器不會自動刷新。
+        publicPath: "/", //給express + webpack-dev-middleware使用。會自動 rebuild，但沒有特別設定則瀏覽器不會自動刷新。
     },
     //為了讓HTML也會在 webpack 打包時一起更新
     plugins:[
         new CleanWebpackPlugin(), //rebuild 時，清除目的地資料夾的未使用檔案
         new HtmlWebpackPlugin({
-            title:"HMR test" //自動更新 html 內的 title名稱
+            // filename:"index.html",
+            // template: './src/index.html', //使用 template 後， title 屬性沒有生效。對調順序亦然。
+            // chunks:["index"],
+            // inject:"html",
+            // title:"HMR test", //自動更新 html 內的 title名稱
         }),
         new webpack.HotModuleReplacementPlugin(), // HMR 外掛
         new UglifyJSPlugin(),//此外掛只支援到 ES5，所以 ES6 以上使用 babel 轉換成 ES5，此外掛才會正常執行。
@@ -47,6 +52,23 @@ module.exports={
     // ex.各種 loader 就要安裝，才能針對檔案解析
     module:{
         rules:[
+            {
+                test: /\.html$/,
+                use: [
+                    // {
+                    //     loader:"file-loader",//讀圖片喔 //有url-loader時，不需要再編寫 file-loader ，以免異常
+                    //     options: {
+                    //         name: 'html/[name].[ext]', //目的地資料夾。[name]-[hash:8]: 名字-hash前8碼，避免同名圖片打包時被覆蓋。不做此設定則不建立路徑
+                    //     }
+                    // },
+                    { 
+                        loader: 'html-loader',
+                    },
+                ]
+                // query: {
+                //     minimize: true
+                // }
+            },
             {
                 //把 ES6 轉譯成舊版
                 test: /\.(js)$/,
@@ -89,7 +111,7 @@ module.exports={
                     {
                         loader: 'url-loader',
                         options: {
-                            limit: 8192, //數字格式。檔案小於 此Byte則會轉換為 base64字串，其他則會call "file-loader"繼續執行
+                            limit: 8192, //數字格式。檔案小於 此Byte則會轉換為 base64字串，其他則會call "file-loader"繼續執行。等於 8.192kb
                             // limit: 1, //數字格式。檔案小於 此Byte則會轉換為 base64字串，其他則會call "file-loader"繼續執行
                             name: 'images/[name]-[hash:8].[ext]', //目的地資料夾。[name]-[hash:8]: 名字-hash前8碼，避免同名圖片打包時被覆蓋。不做此設定則不建立路徑
                         }
@@ -98,7 +120,7 @@ module.exports={
                         loader: 'image-webpack-loader', //這個loader會壓縮圖片
                         options: {
                             //bypassOnDebug:true, // webpack@1.x //啟用時表示圖片都不做處理(略過)，以利開發人員加快編譯速度。上線時要關掉
-                            //disable: true, // webpack@2.x and newer //同bypassOnDebug，但是給 webpack@2.x 以上的新版本使用
+                            disable: true, // webpack@2.x and newer //同bypassOnDebug，但是給 webpack@2.x 以上的新版本使用
                             mozjpeg: {
                                 progressive: true,
                                 quality: 65
