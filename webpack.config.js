@@ -63,6 +63,11 @@ module.exports={
                     // },
                     { 
                         loader: 'html-loader',
+                        // options: {
+                        //     minimize: true, //Boolean: 壓縮html
+                        //     removeComments: true, //#Boolean: 刪註解  
+                        //     collapseWhitespace: true, //#Boolean: 刪空格
+                        // }
                     },
                 ]
                 // query: {
@@ -76,6 +81,7 @@ module.exports={
                 use: {
                     loader: 'babel-loader',
                     options: {
+                        // exclude: path.resolve(__dirname, 'node_modules'), //#排除node_module
                         presets: ['@babel/preset-env']
                     }
                 }
